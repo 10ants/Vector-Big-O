@@ -18,7 +18,7 @@ public:
 	{
 		mSize = 0;
 		mData = nullptr;
-		Reserve( 15 ); // If you put a new in here, you'd be duplicating the reserve code.  Feel free to call non-virtual methods of your own here.
+		Reserve(15); // If you put a new in here, you'd be duplicating the reserve code.  Feel free to call non-virtual methods of your own here.
 		// (You can't call a virtual method because the whole object isn't finished constructing yet.)
 	}
 	// Big 3
@@ -26,38 +26,72 @@ public:
 	{
 		// Free all memory
 	}
-	Vector( const Vector<T>& tOther ) : Vector()// O(n)
+	Vector(const Vector<T>& tOther) : Vector()// O(n)
 	{
+		mCapacity = tOther.mCapcity;
+		mSize = tOther.mSize;
+		mData = new T[mCapacity];
+		for (int i = 0; i < mSize; i++)
+		{
+			mData[i] = tOther.mData[i];
+		}
+
 	}
 	// There is a sneaky way to combine assignment and copy by having one call the other.  They are 90% the same.
-	Vector& operator =( const Vector<T>& tRHS )// O(n)
+	Vector& operator =(const Vector<T>& tRHS)// O(n)
 	{
+		if (this != &tRHS)
+		{
+			mCapacity = tRHS.mCapacity;
+			mSize = tRHS.mSize
+				delete mData;
+			mData = new T[mCapacity];
+			for (int i = 0; i < mSize; i++)
+			{
+				mData[i] = tRHS.mData[i];
+			}
+		}
 		return *this; // This line is weird so I'm just giving it to ya.  It has to be the last line.  It's just the definition of an =
 	}
-	void PushBack( const T& tItem )// O(1)
+	void PushBack(const T& tItem)// O(1)
 	{
+		Reserve[mSize++] = tItem;
+		for (int i = mSize - 1; i >= 0; i--)
+		{
+			mData[i + 1] = mData[i];
+			mSize++;
+		}
 	}
 	void PopBack()// O(1)
 	{
+		if (mSize > 0) // shrinking vector 
+		{
+			mSize--;
+		}
 	}
-	T& At( int tWhere )// O(1)
+	T& At(int tWhere)// O(1)
 	{
 		return mUndefined;
 	}
 	void Clear()// O(1)
 	{
+		delete mData;
+		mData = nullptr;
+		mCapacity = 0;
+		mSize = 0;
+		
 	}
 	int Size()// O(1)
 	{
-		return 0;
+		return mSize;
 	}
-	void Reserve( int tCount )// O(n)
+	void Reserve(int tCount)// O(n)
 	{
 		// This is the hard one.  The rest are 1-4 lines.  I'm not saying reducing line count is something anybody cares about,
 		// I'm just pointing out the scope.  Sometimes people get to fifty lines on something and then complain it's too hard.
 	}
 	int Capacity()// O(1)
 	{
-		return 0;
+		return mCapacity;
 	}
 };
